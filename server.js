@@ -30,9 +30,41 @@ app.post('/submit', (req, res) => {
 	});
 });
 
+app.get('/game', (req, res) => {
+	var movies_list = ['The Shawshank Redemption', 'Avengers: Endgame', 'The Godfather', 'Pulp Fiction', 'Forrest Gump', 'Jurassic Park', 'Back to the Future', 'Catch Me If You Can', 'Jaws', 'Saw'];
+
+	var temp;
+
+	temp = Math.floor(Math.random() * movies_list.length);
+	imdb.getMovie(movies_list[temp], movies => {
+		res.render('game.hbs', {
+			pageTitle: 'Guess a Movie Section',
+			title: movies.Title,
+			poster: movies.Poster
+		});
+	});
+});
+
+app.post('/submitGame', (req, res) => {
+	var title = req.body.title;
+	var correctAnswer = req.body.correctAnswer;
+	var message;
+
+	if(correctAnswer.toLowerCase() == title.toLowerCase()) {
+		message = 'Congratulations! You Won!';
+	} else {
+		message = "Game Over. You Lost.";
+	}
+
+	res.render('submitGame.hbs', {
+		msg: message
+	});
+});
+
 app.get('/game/:id', (req, res) => {
 	var count = 0;
 	var movies_list = ['The Shawshank Redemption', 'Avengers: Endgame', 'The Godfather', 'Pulp Fiction', 'Forrest Gump', 'Jurassic Park', 'Back to the Future', 'Catch Me If You Can', 'Jaws', 'Saw'];
+
 
 	imdb.getMovie(movies_list[req.params.id], movie => {
 		res.render('submit.hbs', {
@@ -40,7 +72,8 @@ app.get('/game/:id', (req, res) => {
 			year: movie.Year,
 			imdbRating: movie.imdbRating,
 			imdbVotes: movie.imdbVotes,
-			poster: movie.Poster
+			poster: movie.Poster,
+			genre: movie.Genre
 		});
 	});
 });

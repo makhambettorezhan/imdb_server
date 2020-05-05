@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{pageTitle}}</title>
+</head>
+<body>
+	<h1>Welcome to {{pageTitle}}</h1>
+	<h3>This is where you'll have a chance to play the guess a movie game</h3>
+	<img src={{poster}}>
+	<form action="/submitGame" method="post">
+		<span>Movie:</span>
+		<input type="text" name="title">
+		<button type="submit">Submit</button>
+		<input id="correct-answer" type="text" name="correctAnswer" style="visibility: hidden;">
+	</form>
+	
+	<script type="text/javascript">
+		document.getElementById('correct-answer').value = "{{title}}";
+	</script>
+</body>
+</html>
