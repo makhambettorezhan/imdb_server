@@ -2,6 +2,7 @@ const express = require('express');
 const hbs = require('hbs');
 const imdb = require('./imdb');
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 var app = express();
 
@@ -49,15 +50,24 @@ app.post('/submitGame', (req, res) => {
 	var title = req.body.title;
 	var correctAnswer = req.body.correctAnswer;
 	var message;
+	var score = fs.readFileSync('scores.txt');
 
 	if(correctAnswer.toLowerCase() == title.toLowerCase()) {
 		message = 'Congratulations! You Won!';
+		score++;
 	} else {
 		message = "Game Over. You Lost.";
+		score = 0;
 	}
 
+	fs.writeFileSync('scores.txt', score);
+
+
 	res.render('submitGame.hbs', {
-		msg: message
+		msg: message,
+		score,
+		userChoice: title,
+		correctAnswer
 	});
 });
 
