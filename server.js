@@ -32,12 +32,13 @@ app.post('/submit', (req, res) => {
 });
 
 app.get('/game', (req, res) => {
-	var movies_list = ['The Shawshank Redemption', 'Avengers: Endgame', 'The Godfather', 'Pulp Fiction', 'Forrest Gump', 'Jurassic Park', 'Back to the Future', 'Catch Me If You Can', 'Jaws', 'Saw'];
 
-	var temp;
+	var imdb_250 = fs.readFileSync('./imdb_250.txt').toString('utf8');
+	var movies_list =  imdb_250.split("\n"); movies_list.pop();
 
-	temp = Math.floor(Math.random() * movies_list.length);
-	imdb.getMovie(movies_list[temp], movies => {
+
+	var random_movie_index = Math.floor(Math.random() * movies_list.length);
+	imdb.getMovie(movies_list[random_movie_index], movies => {
 		res.render('game.hbs', {
 			pageTitle: 'Guess a Movie Section',
 			title: movies.Title,
