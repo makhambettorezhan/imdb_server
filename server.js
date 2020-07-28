@@ -16,6 +16,20 @@ app.get('/', (req, res) => {
 	});
 });
 
+app.get('/rawformat', (req, res, next) => {
+	var title = req.query.title;
+
+	if(title) {
+		imdb.getMovie(title, movie => {
+			res.statusCode = 200;
+			res.setHeader('Content-Type', 'application/json');
+			res.json(movie);
+		});
+	} else {
+		res.end('You have to specify title of the movie as query');
+	}
+});
+
 app.post('/submit', (req, res) => {
 	var title = req.body.title;
 
